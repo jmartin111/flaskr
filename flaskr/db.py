@@ -22,17 +22,17 @@ def close_db(e=None):
         db.close()
 
 
-def initialize_db():
+def init_db():
     db = get_db()
     with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf-8'))
+        db.executescript(f.read().decode('utf8'))
 
 
 @click.command('init-db')  # Define a new switch for the 'flask' CLI
 @with_appcontext
 def init_db_command():
     """Clear existing data and create new tables"""
-    initialize_db()
+    init_db()
     click.echo('Database initialized')
 
 
