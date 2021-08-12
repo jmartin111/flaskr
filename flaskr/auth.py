@@ -1,3 +1,10 @@
+"""This is a Flask Blueprint
+It is a way to organize a group of related views and other code.
+Rather than registering views and other code directly with an application,
+they are registered with a blueprint. Then the blueprint is registered
+with the application when it is available in the factory (__init__) function.
+"""
+
 import functools
 
 from flask import (
@@ -39,7 +46,7 @@ def register():
         return render_template("auth/register.html")
 
 
-@bp.route('login', methods=('GET', 'POST'))
+@bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
         username = request.form['username']
