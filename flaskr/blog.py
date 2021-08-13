@@ -10,19 +10,19 @@ from flaskr.db import get_db
 bp = Blueprint('blog', __name__)
 
 
-@bp.index('/')
+@bp.route('/')
 def index():
     db = get_db()
     posts = db.execute(
         "SELECT p.id, title, body, created, author_id, username"
-        "   FROM post p JOIN user u on p.author = u.id"
+        "   FROM post p JOIN user u on p.author_id = u.id"
         "   ORDER BY created DESC"
     ).fetchall()
 
     return render_template('blog/index.html', posts=posts)
 
 
-@bp.create('/create', methods=('GET', 'POST'))
+@bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create_post():
     if request.method == 'POST':
@@ -38,7 +38,7 @@ def create_post():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO post (title, body, author_id"
+                "INSERT INTO post (title, body, author_id)"
                 "   VALUES (?, ?, ?)",
                 (title, body, g.user['id'])
             )
