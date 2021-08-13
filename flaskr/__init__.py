@@ -2,7 +2,7 @@ import os
 import pdb
 from flask import Flask
 
-from . import db, auth
+from . import db, auth, blog
 
 
 def create_app(test_config=None):
@@ -26,15 +26,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    @flaskr_app.route('/hello')
-    def hello():
-        return 'Hello, Flask!'
-
     db.init_app(flaskr_app)
 
     # blueprint registries
     flaskr_app.register_blueprint(auth.bp)
-    
+    flaskr_app.register_blueprint(blog.bp)
+    flaskr_app.add_url_rule('/', endpoint='index')
+
     return flaskr_app
 

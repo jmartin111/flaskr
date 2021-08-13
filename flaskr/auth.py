@@ -43,7 +43,7 @@ def register():
                 return redirect(url_for("auth.login"))
 
         flash(error)
-        return render_template("auth/register.html")
+    return render_template("auth/register.html")
 
 
 @bp.route('/login', methods=('GET', 'POST'))
