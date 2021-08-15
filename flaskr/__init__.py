@@ -10,6 +10,8 @@ def create_app(test_config=None):
     flaskr_app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(flaskr_app.instance_path, 'flaskr-tutorial.sqlite'),
+        DEBUG=True,
+        ENV='development'
     )
 
     if test_config is None:
