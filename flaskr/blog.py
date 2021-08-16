@@ -88,7 +88,7 @@ def update_post(post_id):
             db.execute(
                 'UPDATE post SET title = ?, body = ?'
                 ' WHERE id = ?',
-                (title, body, id)
+                (title, body, post_id)
             )
             db.commit()
             return redirect(url_for('blog.index'))
@@ -96,10 +96,10 @@ def update_post(post_id):
     return render_template('blog/update.html', post=post)
 
 
-@bp.route('/<int:id>/delete')
+@bp.route('/<int:post_id>/delete', methods=('GET', 'POST'))
 @login_required
-def delete_post():
+def delete_post(post_id):
     db = get_db()
-    db.execute("DELETE from post WHERE id = ?", (id,))
+    db.execute("DELETE from post WHERE id = ?", (post_id,))
     db.commit()
     return redirect(url_for('blog.index'))
