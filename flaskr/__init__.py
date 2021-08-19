@@ -32,6 +32,7 @@ def create_app(test_config=None):
     # blueprint registries
     flaskr_app.register_blueprint(auth.bp)
     flaskr_app.register_blueprint(blog.bp)
+
     flaskr_app.add_url_rule('/', endpoint='index')
 
     return flaskr_app

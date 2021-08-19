@@ -1,3 +1,10 @@
+"""This is a Flask Blueprint
+It is a way to organize a group of related views and other code.
+Rather than registering views and other code directly with an application,
+they are registered with a blueprint. Then the blueprint is registered
+with the application when it is available in the factory (__init__) function.
+"""
+
 from flask import (
     Blueprint, g, request, redirect, url_for, flash, render_template
 )
@@ -17,7 +24,7 @@ def index():
     """
     db = get_db()
     posts = db.execute(
-        "SELECT p.id, title, body, created, author_id, username"
+        "SELECT p.id, title, body, created, updated_on, author_id, username"
         "   FROM post p JOIN user u on p.author_id = u.id"
         "   ORDER BY created DESC"
     ).fetchall()
@@ -30,6 +37,7 @@ def index():
 def create_post():
     if request.method == 'POST':
         title = request.form['title']
+        # updated = request.form['updated_on']
         body = request.form['body']
         error = None
 
@@ -53,7 +61,7 @@ def create_post():
 
 def get_post(post_id, check_author=True):
     post = get_db().execute(
-        "SELECT p.id, title, body, created, author_id, username"
+        "SELECT p.id, title, body, created, updated_on, author_id, username"
         "   FROM post p JOIN user u on p.author_id = u.id"
         "   WHERE p.id = ?",
         (post_id,)
@@ -75,6 +83,7 @@ def update_post(post_id):
 
     if request.method == 'POST':
         title = request.form['title']
+        updated_on = request.form['updated_on']
         body = request.form['body']
         error = None
 
@@ -86,9 +95,9 @@ def update_post(post_id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE post SET title = ?, body = ?'
+                'UPDATE post SET title = ?, updated_on = ?, body = ?'
                 ' WHERE id = ?',
-                (title, body, post_id)
+                (title, updated_on, body, post_id)
             )
             db.commit()
             return redirect(url_for('blog.index'))

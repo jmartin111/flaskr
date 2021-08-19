@@ -6,6 +6,8 @@
 
 {% block content %}
   <form method="post">
+    <label for="updated_on" value="{{ request.form['updated_on'] }}">last update: </label>
+    <h1 id="updated_on">{{ request.form['updated_on'] }}</h1>
     <label for="title">Title</label>
     <input name="title" id="title"
       value="{{ request.form['title'] or post['title'] }}" required>
