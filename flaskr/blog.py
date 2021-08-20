@@ -94,9 +94,9 @@ def update_post(post_id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE post SET title = ?, updated_on = ?, body = ?'
+                'UPDATE post SET title = ?, body = ?'
                 ' WHERE id = ?',
-                (title, updated_on, body, post_id)
+                (title, body, post_id)
             )
             db.commit()
             return redirect(url_for('blog.index'))
