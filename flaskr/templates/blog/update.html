@@ -6,8 +6,7 @@
 
 {% block content %}
   <form method="post">
-    <label for="updated_on" value="{{ request.form['updated_on'] }}">last update: </label>
-    <h1 id="updated_on">{{ request.form['updated_on'] }}</h1>
+
     <label for="title">Title</label>
     <input name="title" id="title"
       value="{{ request.form['title'] or post['title'] }}" required>
@@ -17,6 +16,6 @@
   </form>
   <hr>
   <form action="{{ url_for('blog.delete_post', post_id=post['id']) }}" method="post">
-    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+    <input class="danger" type="submit" value="Delete">
   </form>
 {% endblock %}

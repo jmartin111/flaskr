@@ -83,7 +83,6 @@ def update_post(post_id):
 
     if request.method == 'POST':
         title = request.form['title']
-        updated_on = request.form['updated_on']
         body = request.form['body']
         error = None
 
