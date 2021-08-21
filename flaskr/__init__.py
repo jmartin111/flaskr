@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flaskr.filters import timezone_filter
 
 from . import db, auth, blog
 
@@ -29,11 +30,13 @@ def create_app(test_config=None):
 
     db.init_app(flaskr_app)
 
-    # blueprint registries
+    # various registries
     flaskr_app.register_blueprint(auth.bp)
     flaskr_app.register_blueprint(blog.bp)
 
     flaskr_app.add_url_rule('/', endpoint='index')
+
+    flaskr_app.jinja_env.filters['timezone_filter'] = timezone_filter
 
     return flaskr_app
 

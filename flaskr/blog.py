@@ -4,13 +4,11 @@ Rather than registering views and other code directly with an application,
 they are registered with a blueprint. Then the blueprint is registered
 with the application when it is available in the factory (__init__) function.
 """
-
+from datetime import datetime
 from flask import (
     Blueprint, g, request, redirect, url_for, flash, render_template
 )
-
 from werkzeug.exceptions import abort
-
 from flaskr.auth import login_required
 from flaskr.db import get_db
 
@@ -37,8 +35,8 @@ def index():
 def create_post():
     if request.method == 'POST':
         title = request.form['title']
-        # updated = request.form['updated_on']
         body = request.form['body']
+        updated_on = None
         error = None
 
         if not title:
@@ -49,9 +47,9 @@ def create_post():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO post (title, body, author_id)"
-                "   VALUES (?, ?, ?)",
-                (title, body, g.user['id'])
+                "INSERT INTO post (title, body, updated_on, author_id)"
+                "   VALUES (?, ?, ?, ?)",
+                (title, body, updated_on, g.user['id'])
             )
             db.commit()
             return redirect(url_for('blog.index'))
@@ -84,6 +82,7 @@ def update_post(post_id):
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
+        updated_on = datetime.utcnow()  # rendered to local time on the client-side
         error = None
 
         if not title:
@@ -94,9 +93,9 @@ def update_post(post_id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE post SET title = ?, body = ?'
+                'UPDATE post SET title = ?, body = ?, updated_on = ?'
                 ' WHERE id = ?',
-                (title, body, post_id)
+                (title, body, updated_on, post_id)
             )
             db.commit()
             return redirect(url_for('blog.index'))

@@ -13,9 +13,9 @@
       <header>
         <div>
           <h1>{{ post['title'] }}</h1>
-          <div class="about">by {{ post['username'] }} on {{ post['created'].strftime('%Y-%m-%d %Z%z') }}</div>
-          {% if post['updated_on'] %}
-            <div>updated on: {{ post['updated_on'].strftime('%Y-%m-%d %-H%M') }}</div>
+          <div class="about">by {{ post['username'] }} on {{ post['created'] | timezone_filter }}</div>
+          {% if post['updated_on'] is not none %}
+            <div class="about">updated by {{ post['username'] }} on: {{ post['updated_on'] | timezone_filter }}</div>
           {% endif %}
         </div>
         {% if g.user['id'] == post['author_id'] %}
