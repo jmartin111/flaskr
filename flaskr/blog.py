@@ -110,3 +110,35 @@ def delete_post(post_id):
     db.execute("DELETE from post WHERE id = ?", (post_id,))
     db.commit()
     return redirect(url_for('blog.index'))
+
+
+@bp.route('/<int:post_id>/comment', methods=('GET', 'POST'))
+@login_required
+def comment(post_id):
+    post = get_post(post_id)
+
+    if request.method == 'POST':
+        body = request.form['comment']
+        parent_post = post['id']
+        error = None
+
+        if not body:
+            error = 'Body is required.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                "INSERT INTO comment (body, author_id, parent_post)"
+                "  VALUES (?, ?, ?)",
+                (body, g.user['id'], parent_post)
+            ).commit()
+
+            return redirect(url_for('blog.index'))
+
+    return render_template('blog/comment.html', post=post)
+
+
+
+
