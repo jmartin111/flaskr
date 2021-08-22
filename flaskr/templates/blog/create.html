@@ -11,5 +11,6 @@
         <label for="body">Body</label>
             <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
         <input type="submit" value="Save">
+        <a href="{{ url_for('blog.index') }}">Cancel</
     </form>
 {% endblock %}

@@ -12,5 +12,6 @@
                 {{ request.form['comment'] }}
             </textarea>
         <input type="submit" value="Submit">
+        <a href="{{ url_for('blog.index') }}">Cancel</a>
     </form>
 {% endblock %}
