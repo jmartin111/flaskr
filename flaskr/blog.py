@@ -118,7 +118,7 @@ def comment(post_id):
     post = get_post(post_id)
 
     if request.method == 'POST':
-        body = request.form['comment']
+        body = request.form['body']
         parent_post = post['id']
         error = None
 
@@ -133,8 +133,8 @@ def comment(post_id):
                 "INSERT INTO comment (body, author_id, parent_post)"
                 "  VALUES (?, ?, ?)",
                 (body, g.user['id'], parent_post)
-            ).commit()
-
+            )
+            db.commit()
             return redirect(url_for('blog.index'))
 
     return render_template('blog/comment.html', post=post)
