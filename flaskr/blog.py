@@ -112,6 +112,8 @@ def delete_post(post_id):
     return redirect(url_for('blog.index'))
 
 
+# TODO: add show/hide functionality to [post] view/templates
+#  so that the user can expand comments for that [post]
 @bp.route('/<int:post_id>/comment', methods=('GET', 'POST'))
 @login_required
 def comment(post_id):
@@ -123,7 +125,7 @@ def comment(post_id):
         error = None
 
         if not body:
-            error = 'Body is required.'
+            error = 'Comments cannot be blank.'
 
         if error is not None:
             flash(error)
@@ -138,6 +140,15 @@ def comment(post_id):
             return redirect(url_for('blog.index'))
 
     return render_template('blog/comment.html', post=post)
+
+
+def get_comments():
+    db = get_db()
+    comments = db.execute(
+        "SELECT p.id, title, body, created, updated_on, author_id, username"
+        "   FROM post p JOIN user u on p.author_id = u.id"
+        "   ORDER BY created DESC"
+    ).fetchall()
 
 
 

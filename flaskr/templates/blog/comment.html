@@ -2,7 +2,9 @@
 <html lang="en">
 
 {% extends 'base.html' %}
-    <h1>{% block title %}Commenting on {{ post['title'] }}"</h1>
+
+{% block header %}
+    <h1>{% block title %}Commenting on "{{ post['title'] }}"{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
